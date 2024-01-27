@@ -115,7 +115,7 @@ export default function MiniDrawer(prop) {
   // const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box className="mt-4" sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar sx={{ backgroundColor: '#fff' }}>

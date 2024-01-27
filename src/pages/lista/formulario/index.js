@@ -3,18 +3,12 @@ import Card from "../../../components/Card";
 import { Button, Row } from "react-bootstrap";
 import * as React from 'react';
 import Box from '@mui/material/Box';
-
-const tipoLista = [
-    {
-        value:"0",
-        label:"Presença"
-    },{
-        value:"1",
-        label:"Itens"
-    }
-]
+import useContainer from "./container";
 
 const Formulario = () =>{
+
+    const { functions, values, tipoLista } = useContainer();
+
     return<>
     <Container>
         <Card title="Cadastro de Lista">
@@ -25,11 +19,12 @@ const Formulario = () =>{
             >
             <Row className="">
                 <Row className="col-6 mr-2 ml-2">
-                    <TextField id="nome" label="Nome" type="search" variant="standard"/>
+                    <TextField id="nome" label="Nome" type="search" variant="standard" onChange={e => functions.setValues(prevState => {return { ...prevState, nome: e.target.value }})}/>
                 </Row>
                 <Row className="col-6">
                     <TextField id="tipoLista" select label="Tipo Lista" defaultValue="0" 
                             helperText="Selecione o tipo da lista" variant="standard"
+                            onChange={e => functions.setValues(prevState => {return { ...prevState, tipoLista: e.target.value }})}
                             >
                             {tipoLista.map((tipo) => (
                                 <MenuItem key={tipo.value} value={tipo.value}>
@@ -39,20 +34,21 @@ const Formulario = () =>{
                         </TextField>
                 </Row>
                 <Row className="col-8 mr-2 ml-2">
-                    <TextField id="descricao" placeholder="Descrição sobre a lista" label="Descrição" type="search" variant="standard"/>                    
+                    <TextField id="descricao" placeholder="Descrição sobre a lista" label="Descrição" type="search" 
+                    variant="standard" onChange={e => functions.setValues(prevState => {return { ...prevState, descricao: e.target.value }})}/>                    
                 </Row>
                 <Row className="col-2">
-                    <TextField id="inicio" label="Inicio" type="date" variant="standard"
+                    <TextField id="inicio" label="Inicio" type="date" variant="standard" onChange={e => functions.setValues(prevState => {return { ...prevState, inicio: e.target.value }})}
                         InputLabelProps={{shrink: true}}/>
                 </Row>
                 <Row className="col-2 ml-2">
-                    <TextField id="fim" label="Fim" type="date" variant="standard"
+                    <TextField id="fim" label="Fim" type="date" variant="standard" onChange={e => functions.setValues(prevState => {return { ...prevState, fim: e.target.value }})}
                         InputLabelProps={{shrink: true}}/>
                 </Row>
             </Row>
             <div className="float-right mr-4 mt-4">
-                <Button variant='danger' href='/formulario/lista' size='sm'>Cancelar</Button>
-                <Button variant='primary' href='/formulario/lista' size='sm'>Cadastrar</Button>
+                <Button variant='danger' href='/lista' size='sm'>Cancelar</Button>
+                <Button variant='primary' size='sm' onClick={e => functions.cadastrar()}>Cadastrar</Button>
             </div>
             </Box>    
         </Card>

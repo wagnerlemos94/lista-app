@@ -31,7 +31,7 @@ const useContainer = () => {
             const data = response.data;
             console.log(data)
             localStorage.setItem('usuarioLogado', JSON.stringify(data));
-            localStorage.setItem('token', JSON.stringify(data.access_token));
+            localStorage.setItem('token', data.access_token);
             navigate('/lista');
         }).catch(erro => {
             error("Usuario ou senha inválido");
