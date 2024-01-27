@@ -1,12 +1,13 @@
 import React from 'react';
 import useContainer from "./container";
 import DataTable from "../../components/DataTable";
-import { Container } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 
 const Lista = () => {
     const { lista, data } = useContainer();
   return (
     <Container>
+      <Button variant='primary' href='/formulario/lista' size='sm'>Cadastro</Button>
         <DataTable datatable={data} />
     </Container>  
   )

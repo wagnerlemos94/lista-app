@@ -9,6 +9,7 @@ import AccessDenied from '../../components/accessDenied';
 import {Fragment} from 'react';
 import Lista from '../../pages/lista';
 import Sidebar from '../../components/sidebar';
+import Formulario from '../../pages/lista/formulario';
 
 const PrivateRoute = (props) => {
     const  token = localStorage.getItem('token');
@@ -24,6 +25,7 @@ const Router = () => {
                 <Route exact path='/usuario' element={<PrivateRoute Component={<Usuario />} title={"Usuario"} />} />
                 <Route path='/dashboard' element={<PrivateRoute Component={<Dashboard/>} title={"Dashboard"} />} />
                 <Route path='/lista' element={<PrivateRoute Component={<Lista/>} title={"Lista"} />} />
+                <Route path='/formulario/lista' element={<PrivateRoute Component={<Formulario/>} title={"Lista"} />} />
                 <Route path='/accessDenied' element={<AccessDenied/>} />               
             </Routes>
             </Fragment>
