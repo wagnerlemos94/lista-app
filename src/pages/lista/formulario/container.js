@@ -1,6 +1,6 @@
 
 import ListaResource from '../../../services/controllers/ListaResource';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {useState, useEffect} from "react";
 
 import { error, warning, success } from '../../../components/Toast';
@@ -8,6 +8,7 @@ import { error, warning, success } from '../../../components/Toast';
 const useContainer = () => {
     
     const navigate = useNavigate();
+    const location = useLocation();
     const service = new ListaResource();
     const [lista, setLista] = useState();
     
@@ -60,6 +61,7 @@ const useContainer = () => {
     }
 
     useEffect(()=> {
+        console.log(location.state)
     },[]);
 
     return {
