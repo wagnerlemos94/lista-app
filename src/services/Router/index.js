@@ -10,6 +10,7 @@ import {Fragment} from 'react';
 import Lista from '../../pages/lista';
 import Sidebar from '../../components/sidebar';
 import Formulario from '../../pages/lista/formulario';
+import ListaPublica from '../../pages/lista/publica';
 
 const PrivateRoute = (props) => {
     const  token = localStorage.getItem('token');
@@ -26,6 +27,7 @@ const Router = () => {
                 <Route path='/dashboard' element={<PrivateRoute Component={<Dashboard/>} title={"Dashboard"} />} />
                 <Route path='/lista' element={<PrivateRoute Component={<Lista/>} title={"Lista"} />} />
                 <Route path='/formulario/lista' element={<PrivateRoute Component={<Formulario/>} title={"Lista"} />} />
+                <Route path='/public/lista/:id' element={<ListaPublica/>}/>
                 <Route path='/accessDenied' element={<AccessDenied/>} />               
             </Routes>
             </Fragment>

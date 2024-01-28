@@ -9,6 +9,14 @@ class UsuarioResource extends ApiResource{
         return this.get("/",``);
     }
 
+    buscar(id){
+        return this.get(`/${id}`,``);
+    }
+
+    assinar(id, body){
+        return this.put(`/assinar/${id}`,body);
+    }
+
     atualizar(id,body){
         return this.put(`/${id}`,body);
     }

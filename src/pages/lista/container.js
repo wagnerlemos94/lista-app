@@ -9,6 +9,7 @@ import { error, warning } from '../../components/Toast';
 const useContainer = () => {
     
     const navigate = useNavigate();
+    const host = window.location.origin;
     const service = new ListaResource();
     const [lista, setLista] = useState();
 
@@ -23,6 +24,9 @@ const useContainer = () => {
             label: "Tipo Lista",
             field: "tipoLista"
         },{
+            label: "URL",
+            field: "url"
+        },{
             label: "Ações",
             field: "acoes"
         }
@@ -32,6 +36,7 @@ const useContainer = () => {
         service.listar().then( response => {
             const data = response.data;
             Object.values(data).map( lista => {
+                lista.url = <a href={`${host}/public/lista/${lista.id}`} target="_blank">{`${host}/public/lista/${lista.id}`}</a>;
                 lista.acoes =   
                 <>
                     <a className="mr-2" id={lista.id}
@@ -49,6 +54,7 @@ const useContainer = () => {
 
     const editar = (lista) => {
         lista.acoes = null;
+        lista.url = null;
         navigate("/formulario/lista", {state:lista})
     }
 

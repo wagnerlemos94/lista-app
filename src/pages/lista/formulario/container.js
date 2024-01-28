@@ -10,9 +10,10 @@ const useContainer = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const service = new ListaResource();
-    const [lista, setLista] = useState();
+    const [titulo, setTitulo] = useState();
     
     const inicialValues = {
+        id:null,
         nome:"",
         descricao:"",
         tipoLista:0,
@@ -40,6 +41,13 @@ const useContainer = () => {
         return validacoes;
     }
 
+    const salvar = () => {
+        if(values.id === null ){
+            cadastrar();
+        }else{
+            atualizar();
+        }
+    }
     const cadastrar = () => {
         if(validacoes()){
             service.cadastrar(values).then(response => {
@@ -50,25 +58,47 @@ const useContainer = () => {
             })
         }
     }
+    const atualizar = () => {
+        if(validacoes()){
+            service.atualizar(values.id,values).then(response => {
+                success("Lista cadastrada com sucesso!")
+                navigate('/lista');
+            }).catch(erro => {
+                error("Erro ao cadastrar!")
+            })
+        }
+    }
 
-    const listar = () => {
-        service.listar().then( response => {
-            setLista(response.data);
-            console.log(lista)
-        }).catch( erro => {
-            warning(erro.response)
-        })
+    function montarLista(lista){
+        lista = {
+            id:lista.id,
+            nome:lista.nome,
+            descricao:lista.descricao,
+            tipoLista:lista.tipoLista === "PRESENCA" ? 0 : 1,
+            inicio:lista.inicio,
+            fim:lista.fim
+        }
+        setValues(lista)
+        console.log(lista)
+        console.log(values)
     }
 
     useEffect(()=> {
-        console.log(location.state)
+        if(location.state){
+            console.log(location.state)
+            setTitulo('Editar Lista')
+            montarLista(location.state)
+        }else{            
+            setTitulo('Criar Lista')
+        }
     },[]);
 
     return {
         tipoLista:tipoLista,
         values:values,
+        titulo:titulo,
         functions: {
-            cadastrar,
+            salvar,
             setValues
         } 
     }
