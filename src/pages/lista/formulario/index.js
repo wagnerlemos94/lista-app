@@ -1,13 +1,14 @@
 import { Container, TextField, MenuItem  } from "@mui/material";
 import Card from "../../../components/Card";
-import { Button, Row } from "react-bootstrap";
+import DataTable from "../../../components/DataTable";
+import { Button, Col, Row } from "react-bootstrap";
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import useContainer from "./container";
 
 const Formulario = () =>{
 
-    const { functions, values, tipoLista, titulo } = useContainer();
+    const { functions, values, tipoLista, titulo, data } = useContainer();
 
     return<>
     <Container>
@@ -19,7 +20,7 @@ const Formulario = () =>{
             >
             <Row className="">
                 <Row className="col-6 mr-2 ml-2">
-                    <TextField id="nome" label="Nome" value={values.nome} type="search" variant="standard" onChange={e => functions.setValues(prevState => {return { ...prevState, nome: e.target.value }})}/>
+                    <TextField id="nome" label="Titulo" value={values.nome} type="search" variant="standard" onChange={e => functions.setValues(prevState => {return { ...prevState, nome: e.target.value }})}/>
                 </Row>
                 <Row className="col-6">
                     <TextField id="tipoLista" select label="Tipo Lista" value={values.tipoLista} 
@@ -48,10 +49,20 @@ const Formulario = () =>{
             </Row>
             <div className="float-right mr-4 mt-4">
                 <Button variant='danger' href='/lista' size='sm'>Cancelar</Button>
-                <Button variant='primary' size='sm' onClick={e => functions.salvar()}>Cadastrar</Button>
+                <Button variant='primary' size='sm' onClick={e => functions.salvar()}>salvar</Button>
             </div>
             </Box>    
         </Card>
+        <Row className="mr-2 ml-2">
+            <TextField className="mt-3 col-4" id="nomeItem" placeholder="Nome e sobrenome" label="Nome" defaultValue={""} onChange={e => functions.setItem(prevState => {return { ...prevState, nome: e.target.value }})} type="search" 
+            variant="standard"/>   
+            <Col>
+            <Button className="mt-4" variant='primary' size='sm' onClick={e => functions.criarItem()}>Assinar</Button>                 
+            </Col>
+        </Row>
+        <div className="mt-5">
+            <DataTable datatable={data} />
+        </div>
     </Container>
     </>
 }

@@ -12,14 +12,16 @@ const ListaPublica = () => {
   return (
     <Container className="mt-4">
         <h1 className="text-center">Lista de Presença</h1>
-        <Card title={""} className="mt-5">
+        <Card title={`${lista.nome}`} className="mt-5">
         <Box
             component="form"
             noValidate
             autoComplete="off"
             >
             <Row className="mr-2 ml-2">
-                <TextField id="descricao" label="Descrição do evento" value={lista.descricao} type="search" 
+                <TextField id="descricao" className="col-9 mr-2" label="Descrição do evento" value={`${lista.descricao}`} type="search" 
+                variant="standard" disabled/>                    
+                <TextField id="descricao" className="col-2" label="Dia do Evento" value={`${lista.fim}`} type="search" 
                 variant="standard" disabled/>                    
             </Row>
             </Box>    

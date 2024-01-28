@@ -1,6 +1,6 @@
 import ApiResource from "./apiResource";
 
-class UsuarioResource extends ApiResource{
+class ListaResource extends ApiResource{
     constructor(){
         super('/lista');
     }
@@ -30,4 +30,4 @@ class UsuarioResource extends ApiResource{
     }
 }
 
-export default UsuarioResource;
+export default ListaResource;
