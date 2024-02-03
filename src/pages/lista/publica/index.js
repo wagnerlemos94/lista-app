@@ -21,7 +21,7 @@ const ListaPublica = () => {
             <Row className="mr-2 ml-2">
                 <TextField id="descricao" className="col-9 mr-2" label="Descrição do evento" value={`${lista.descricao}`} type="search" 
                 variant="standard" disabled/>                    
-                <TextField id="descricao" className="col-2" label="Dia do Evento" value={`${lista.fim}`} type="search" 
+                <TextField id="diaEvento" className="col-2" label="Dia do Evento" value={ lista.fim !== null ? `${lista.fim}` : "Ainda não definido"} type="search" 
                 variant="standard" disabled/>                    
             </Row>
             </Box>    

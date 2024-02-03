@@ -10,11 +10,11 @@ class ListaResource extends ApiResource{
     }
 
     buscar(id){
-        return this.get(`/${id}`,``);
+        return this.getpublic(`/${id}`,``);
     }
 
     assinar(id, body){
-        return this.put(`/assinar/${id}`,body);
+        return this.putpublic(`/assinar/${id}`,body);
     }
 
     atualizar(id,body){

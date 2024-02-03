@@ -16,12 +16,10 @@ const useContainer = () => {
     const service = new ListaResource();
     const itemService = new ItemResource();
     const [titulo, setTitulo] = useState();
-    const [nomeItem, setNomeItem] = useState();
     const [item, setItem] = useState({
         produto:null,
         nome:""
     });
-    const [itens, setItens] = useState([]);
     
     const inicialValues = {
         id:null,
@@ -29,7 +27,8 @@ const useContainer = () => {
         descricao:"",
         tipoLista:0,
         inicio:null,
-        fim:null
+        fim:null,
+        itens:new Array()
     }
 
     const colunms = [
@@ -50,18 +49,18 @@ const useContainer = () => {
     const tipoLista = [
         {
             value:"0",
-            label:"Presença"
+            label:"PRESENCA"
         },{
             value:"1",
-            label:"Itens"
+            label:"ITENS"
         }
     ]
 
-    function validacoes(nome){
+    function validacoes(nome, msg){
         let validacoes = true;
         if(nome === ""){
             validacoes = false;
-            error("Nome é obrigatório!")
+            error(msg);
         }
         return validacoes;
     }
@@ -74,23 +73,44 @@ const useContainer = () => {
         }
     }
     const cadastrar = () => {
-        if(validacoes(values)){
+        if(validacoes(values.nome, "Titulo é obrigatório!")){
             service.cadastrar(values).then(response => {
                 success("Lista cadastrada com sucesso!")
                 navigate('/lista');
             }).catch(erro => {
-                error("Erro ao cadastrar!")
+                if(erro.response.data.mensagemUsuario){
+                    error(erro.response.data.mensagemUsuario)
+                }else{
+                    error("Erro ao cadastrar!")
+                }
             })
         }
     }
+    const setTipoLista = (tipoList) => {
+        let retorno = null;
+        tipoLista.map( tipo => {
+            if(typeof  tipoList === "string" && tipo.label === tipoList){
+                retorno = tipo.value;
+            }else if(typeof  tipoList !== "string" && tipo.value === tipoList){
+                retorno = tipo.label;
+            }
+        })
+        return retorno;
+    }
     const atualizar = () => {
-        if(validacoes(values)){
-            values.itens = removeAcoesEImput(itens);
+        if(validacoes(values.nome)){
+            // alert(values.tipoLista)
+            // values.tipoLista = setTipoLista(values.tipoLista);
+            values.itens = removeAcoesEImput(values.itens);
             service.atualizar(values.id,values).then(response => {
                 success("Lista atualizada com sucesso!")
                 navigate('/lista');
             }).catch(erro => {
-                error("Erro ao cadastrar!")
+                if(erro.response.data.mensagemUsuario){
+                    error(erro.response.data.mensagemUsuario)
+                }else{
+                    error("Erro ao cadastrar!")
+                }
             })
         }
     }
@@ -105,34 +125,89 @@ const useContainer = () => {
         })
         return listaItens;
     }
-    const atualizarItem = (item) => {
+
+    const buscar = (id) => {
+        service.buscar(id).then(response => {
+            const { data } = response;
+            data.tipoLista = setTipoLista(data.tipoLista);
+            data.itens = montarItens(id,data.itens);
+            setValues(data);
+        }).catch(erro => {
+            console.log(erro.response.data)
+            if(erro.response.data.mensagemUsuario){
+                error(erro.response.data.mensagemUsuario)
+            }else{
+                error("Erro ao cadastrar!")
+            }
+        })
+    }
+
+    const atualizarItem = (idLista,item) => {
         if(validacoes(item.nome)){
             itemService.atualizar(item.id,item).then(response => {
+                buscar(idLista)
                 success("Lista atualizada com sucesso!")
             }).catch(erro => {
-                error("Erro ao cadastrar!")
+                if(erro.response.data.mensagemUsuario){
+                    error(erro.response.data.mensagemUsuario)
+                }else{
+                    error("Erro ao cadastrar!")
+                }
             })
         }
     }
-    const deletar = (item) => {
+    const deletar = (idLista,item) => {
         if(validacoes(item.nome)){
             itemService.deletar(item.id,item).then(response => {
+                buscar(idLista)
                 success("Item deletado com sucesso!")
             }).catch(erro => {
-                error("Erro ao cadastrar!")
+                if(erro.response.data.mensagemUsuario){
+                    error(erro.response.data.mensagemUsuario)
+                }else{
+                    error("Erro ao cadastrar!")
+                }
             })
         }
     }
     const criarItem = () => {
-        if(validacoes(item.nome)){
-            itemService.cadastrar(values.id,item).then(response => {
-                console.log(itens)
-                montarItem(response.data);
-                console.log(itens)
-                success("Lista atualizada com sucesso!")
-            }).catch(erro => {
-                error("Erro ao cadastrar!")
-            })
+        if(validacoes(item.nome, "Nome é obrigatório!")){
+            if(values.id == null){
+                if(validacoes(values.nome, "Titulo é obrigatório!")){
+                    service.cadastrar(values).then(response => {
+                        const idLista = response.data.id;
+                        // montarLista(response.data)
+                        itemService.cadastrar(idLista,item).then(response => {
+                            buscar(idLista);
+                            success("Lista atualizada com sucesso!")
+                        }).catch(erro => {
+                            if(erro.response.data.mensagemUsuario){
+                                error(erro.response.data.mensagemUsuario)
+                            }else{
+                                error("Erro ao cadastrar!")
+                            }
+                        })
+                    }).catch(erro => {
+                        if(erro.response.data.mensagemUsuario){
+                            error(erro.response.data.mensagemUsuario)
+                        }else{
+                            error("Erro ao cadastrar!")
+                        }
+                    });
+                }
+            }else{
+                itemService.cadastrar(values.id,item).then(response => {
+                    buscar(values.id);
+                    success("Lista atualizada com sucesso!")
+                }).catch(erro => {
+                    if(erro.response.data.mensagemUsuario){
+                        error(erro.response.data.mensagemUsuario)
+                    }else{
+                        error("Erro ao cadastrar!")
+                    }
+                })
+            }
+
         }
     }
 
@@ -149,7 +224,7 @@ const useContainer = () => {
         setValues(lista)
     }
     
-    function montarItens(itens){
+    const montarItens = (idLista,itens) => {
         const listaItens = new Array();
         itens.map(item => {
             listaItens.push({
@@ -159,40 +234,30 @@ const useContainer = () => {
                 acoes:   
                 <>
                     <a className="mr-2" id={item.id}
-                    onClick={e => atualizarItem(item)}>
+                    onClick={e => atualizarItem(idLista,item)}>
                         <EditIcon />
                     </a>
                     <a className="mr-2" id={item.id}
-                    onClick={e => deletar(item)}>
+                    onClick={e => deletar(idLista,item)}>
                         <DeleteIcon />
                     </a>
                   </>  
             });
-        })
-        setItens(listaItens)
-    }
-
-    function montarItem(item){
-        itens.push({
-            id:item.id,
-            produto:item.produto,
-            nome:<><TextField id="nome" label="" defaultValue={item.nome} type="search" variant="standard" onChange={e => item.nome = e.target.value}/></>,
-            acoes:   
-                <a className="mr-2" id={item.id}
-                onClick={e => atualizarItem(item)}>
-                    <EditIcon />
-                </a> 
         });
-        setItens(itens)
+        return listaItens;
     }
 
-    useEffect(()=> {
+    const iniciar = () => {
         if(location.state){
-            montarItens(location.state.itens)
-            montarLista(location.state)
+            setTitulo('Editar Lista');
+            buscar(location.state.id)
         }else{            
             setTitulo('Criar Lista')
         }
+    }
+
+    useEffect(()=> {
+        iniciar();
     },[]);
 
     return {
@@ -201,7 +266,7 @@ const useContainer = () => {
         titulo:titulo,
         data:{
             columns:colunms,
-            rows:itens
+            rows:values.itens
         },
         functions: {
             salvar,

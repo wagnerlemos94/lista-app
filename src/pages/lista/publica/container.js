@@ -11,7 +11,7 @@ const useContainer = () => {
     const navigate = useNavigate();
     const {id} = useParams();
     const service = new ListaResource();
-    const [lista, setLista] = useState({descricao:""});
+    const [lista, setLista] = useState({descricao:"", fim:null});
     const [nome, setNome] = useState(null);
 
     const colunms = [
@@ -32,7 +32,7 @@ const useContainer = () => {
             }
             setLista(data);
         }).catch( erro => {
-            warning(erro.response)
+            warning(erro.response.data.mensagemUsuario)
         })
     }
 
@@ -48,7 +48,7 @@ const useContainer = () => {
                 listar();
                 success("Nome incluido com sucesso!");
             }).catch( erro => {
-                warning(erro.response)
+                warning(erro.response.data.mensagemUsuario)
             })
             navigate(`/public/lista/${id}`);
         }else{

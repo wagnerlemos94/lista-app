@@ -34,6 +34,10 @@ class ApiResource {
         const requestUrl = `${baseURL}${this.apiurl}${resource}`
         return axios["put"](requestUrl, body, this.getConfig());
     }
+    putpublic(resource, body){
+        const requestUrl = `${baseURL}${this.apiurl}${resource}`
+        return axios["put"](requestUrl, body, this.getConfig());
+    }
     
     delete(resource){
         expirationToken();
@@ -43,6 +47,11 @@ class ApiResource {
     
     get(resource,param){
         expirationToken();
+        const requestUrl = `${baseURL}${this.apiurl}${resource}${param}`;
+        return axios["get"](requestUrl, this.getConfig());
+    }
+
+    getpublic(resource,param){
         const requestUrl = `${baseURL}${this.apiurl}${resource}${param}`;
         return axios["get"](requestUrl, this.getConfig());
     }
