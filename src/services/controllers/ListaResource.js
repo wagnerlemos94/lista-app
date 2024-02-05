@@ -1,12 +1,20 @@
 import ApiResource from "./apiResource";
 
-class UsuarioResource extends ApiResource{
+class ListaResource extends ApiResource{
     constructor(){
         super('/lista');
     }
 
     listar(){
         return this.get("/",``);
+    }
+
+    buscar(id){
+        return this.getpublic(`/${id}`,``);
+    }
+
+    assinar(id, body){
+        return this.putpublic(`/assinar/${id}`,body);
     }
 
     atualizar(id,body){
@@ -22,4 +30,4 @@ class UsuarioResource extends ApiResource{
     }
 }
 
-export default UsuarioResource;
+export default ListaResource;

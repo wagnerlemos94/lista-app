@@ -15,7 +15,8 @@ const Toast = Swal.mixin({
 export const success = (msg) => {
     Toast.fire({
         icon: 'success',
-        title: msg
+        title: msg,
+        position:"center"
         });
 }
 
@@ -23,7 +24,8 @@ export const success = (msg) => {
 export const error = (msg) => {      
     Toast.fire({
         icon: 'error',
-        title: msg
+        title: msg,
+        position:"center"
       })
 }
 
@@ -31,6 +33,7 @@ export const error = (msg) => {
 export const warning = (msg) => {  
     Toast.fire({
         icon: 'warning',
-        title: msg
+        title: msg,
+        position:"center"
       })
 }
