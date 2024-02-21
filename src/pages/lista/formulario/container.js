@@ -28,13 +28,39 @@ const useContainer = () => {
         tipoLista:0,
         inicio:null,
         fim:null,
-        itens:new Array()
+        itens:new Array(),
+        aberta: false
     }
-
-    const colunms = [
+    
+    const aberta = [
+        {
+            value:true,
+            label:"Sim"
+        },{
+            value:false,
+            label:"Não"
+        }
+    ]
+    const colunmsNormal = [
         {
             label: "Num",
             field: "id"
+        },{
+            label: "Nome",
+            field: "nome"
+        },{
+            label: "Ações",
+            field: "acoes"
+        }
+    ]
+    const [colunms, setColunms] = useState(colunmsNormal);
+    const colunmsItens = [
+        {
+            label: "Num",
+            field: "id"
+        },{
+            label: "Item",
+            field: "produto"
         },{
             label: "Nome",
             field: "nome"
@@ -49,7 +75,7 @@ const useContainer = () => {
     const tipoLista = [
         {
             value:"0",
-            label:"PRESENCA"
+            label:"NORMAL"
         },{
             value:"1",
             label:"ITENS"
@@ -58,7 +84,8 @@ const useContainer = () => {
 
     function validacoes(nome, msg){
         let validacoes = true;
-        if(nome === ""){
+        
+        if(values.tipoLista == 0 && nome === ""){
             validacoes = false;
             error(msg);
         }
@@ -129,6 +156,9 @@ const useContainer = () => {
     const buscar = (id) => {
         service.buscar(id).then(response => {
             const { data } = response;
+            if(data.tipoLista == "ITENS" ){
+                setColunms(colunmsItens);
+            }
             data.tipoLista = setTipoLista(data.tipoLista);
             data.itens = montarItens(id,data.itens);
             setValues(data);
@@ -229,8 +259,8 @@ const useContainer = () => {
         itens.map(item => {
             listaItens.push({
                 id:item.id,
-                produto:item.produto,
                 nome:<TextField id="nome" label="" defaultValue={item.nome} type="search" variant="standard" onChange={e => item.nome = e.target.value}/>,
+                produto:<TextField id="produto" label="" defaultValue={item.produto} type="search" variant="standard" onChange={e => item.produto = e.target.value}/>,
                 acoes:   
                 <>
                     <a className="mr-2" id={item.id}
@@ -261,6 +291,7 @@ const useContainer = () => {
     },[]);
 
     return {
+        aberta:aberta,
         tipoLista:tipoLista,
         values:values,
         titulo:titulo,

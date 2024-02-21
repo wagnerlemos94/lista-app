@@ -27,11 +27,15 @@ const ListaPublica = () => {
             </Box>    
         </Card>
         <Row className="mr-2 ml-2">
-            <TextField className="mt-3 col-4" id="nome" placeholder="Nome e sobrenome" label="Nome" defaultValue={""} onChange={e => functions.setNome(e.target.value)} type="search" 
-            variant="standard"/>   
-            <Col>
-            <Button className="mt-4" variant='primary' size='sm' onClick={e => functions.assinar()}>Assinar</Button>                 
-            </Col>
+            { lista.aberta && 
+                <>
+                    <TextField className="mt-3 col-4" id="nome" placeholder="Nome e sobrenome" label="Nome" defaultValue={""} onChange={e => functions.setNome(e.target.value)} type="search" 
+                    variant="standard"/>   
+                    <Col>
+                        <Button className="mt-4" variant='primary' size='sm' onClick={e => functions.assinar()}>Assinar</Button>                 
+                    </Col>
+                </>
+            }
         </Row>
         <div className="mt-5">
             <DataTable datatable={data} />

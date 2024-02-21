@@ -14,7 +14,7 @@ const useContainer = () => {
     const [lista, setLista] = useState({descricao:"", fim:null});
     const [nome, setNome] = useState(null);
 
-    const colunms = [
+    const colunmsNormal = [
         {
             label: "Num",
             field: "id"
@@ -24,9 +24,27 @@ const useContainer = () => {
         }
     ]
 
+    const [colunms, setColunms] = useState(colunmsNormal);
+
+    const colunmsItens = [
+        {
+            label: "Num",
+            field: "id"
+        },{
+            label: "Item",
+            field: "produto"
+        },{
+            label: "Nome",
+            field: "nome"
+        }
+    ]
+
     const listar = () => {
         service.buscar(id).then( response => {
-            const data = response.data;
+            const {data} = response;
+            if(data.tipoLista == "ITENS" ){
+                setColunms(colunmsItens);
+            }
             for(let i=0; data.itens.length > i; i++){
                 data.itens[i].id = i+1
             }
