@@ -40,7 +40,7 @@ const Formulario = () =>{
                 </Row>
                 <Row className="col-2">
                     <TextField id="tipoLista" select label="Lista Aberta" value={values.aberta} 
-                                helperText="Selecione o tipo da lista" variant="standard"
+                                variant="standard"
                                 onChange={e => functions.setValues(prevState => {return { ...prevState, aberta: e.target.value }})}
                                 >
                                 {aberta.map((tipo) => (

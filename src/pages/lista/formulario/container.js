@@ -93,6 +93,7 @@ const useContainer = () => {
     }
 
     const salvar = () => {
+        values.itens = removeAcoesEImput(values.itens);
         if(values.id === null ){
             cadastrar();
         }else{
@@ -126,9 +127,6 @@ const useContainer = () => {
     }
     const atualizar = () => {
         if(validacoes(values.nome)){
-            // alert(values.tipoLista)
-            // values.tipoLista = setTipoLista(values.tipoLista);
-            values.itens = removeAcoesEImput(values.itens);
             service.atualizar(values.id,values).then(response => {
                 success("Lista atualizada com sucesso!")
                 navigate('/lista');
@@ -146,7 +144,7 @@ const useContainer = () => {
         itens.map(item => {
             listaItens.push({
                 id:item.id,
-                produto:item.produto,
+                produto:item.produto.props.defaultValue,
                 nome:item.nome.props.defaultValue
             })
         })
@@ -206,7 +204,6 @@ const useContainer = () => {
                 if(validacoes(values.nome, "Titulo é obrigatório!")){
                     service.cadastrar(values).then(response => {
                         const idLista = response.data.id;
-                        // montarLista(response.data)
                         itemService.cadastrar(idLista,item).then(response => {
                             buscar(idLista);
                             success("Lista atualizada com sucesso!")
